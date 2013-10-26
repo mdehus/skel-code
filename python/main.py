@@ -1,27 +1,29 @@
+""" This is a useful description for the Python program that
+    will be printed out to the user.
+"""
 import sys
 import argparse
 import logging
+
+LOGGING_FORMAT = "%(message)s"
 
 def main(argv=None):
     if argv is None:
         argv = sys.argv[1:]
 
-    description = ''' This tool takes one, or multiple Echo360 lecture(s), and
-                      builds self-contained copies, stored in zip files. '''
-
-    p = argparse.ArgumentParser(description=description)
-    p.add_argument("lectures", nargs="+",
-                   help="Path to Echo360 lecture or lectures to upload.")
-    p.add_argument("-o", "--outputdir", default=None,
-                   help='''Directory to save the resulting zip file(s). 
-                           Files will be named automatically by their 
-                           lecture GUID.  Default is /tmp''')
-    p.add_argument("-verbose", "-v", action='count',
-                   help='''-v prints informational messages, 
-                            -vv prints debug messages.''')
+    p = argparse.ArgumentParser(description=__doc__)
+    """ The following are a set of common examples for arguments
+        with the argparse module.
+    
+    p.add_argument("singl_iteme", help='')
+    p.add_argument("multiple_items", nargs="+", help='')
+    p.add_argument("-o", "--outputdir", default=None, help='')
+    p.add_argument("-unixtime", "-u", action="store_true", help='')
+    """
+    p.add_argument("-verbose", "-v", action='count', help='')
 
     args = p.parse_args(argv)
-    fmt = "%(message)s"
+    fmt = LOGGING_FORMAT
 
     if args.verbose == 1:
         logging.basicConfig(level=logging.INFO, format=fmt)
@@ -29,6 +31,9 @@ def main(argv=None):
         logging.basicConfig(level=logging.DEBUG, format=fmt)
     else:
         logging.basicConfig(level=logging.WARNING, format=fmt)
+
+    logger = logging.getLogger()
+    logger.warn('hello')
 
     return 0
 
